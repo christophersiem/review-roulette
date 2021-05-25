@@ -1,33 +1,26 @@
 import styled from 'styled-components/macro'
-import { useEffect, useState } from 'react'
-import githubApi from './service/githubAPI'
+import {Switch, Route} from 'react-router-dom'
+import Homepage from "./components/Homepage";
+import RepoPage from "./components/RepoPage";
+import PullRequestPage from "./components/PullRequestPage";
 
 function App() {
-  const [profile, setProfile] = useState({})
-  const [error, setError] = useState('')
 
-  useEffect(() => {
-    githubApi
-      .get('https://api.github.com/user')
-      .then(response => response.data)
-      .then(setProfile)
-      .catch(error => setError(error.response.status))
-  }, [])
-
-  if (error) {
     return (
-      <Page>
-        <img src={`https://http.cat/${error}`} alt="" />
-      </Page>
+        <Page>
+            <Switch>
+                <Route path={"/"} exact>
+                    <Homepage/>
+                </Route>
+                <Route path={"/:user/repos"}>
+                    <RepoPage/>
+                </Route>
+                <Route path={"/:user/:repo/pulls"}>
+                    <PullRequestPage/>
+                </Route>
+            </Switch>
+        </Page>
     )
-  }
-
-  return (
-    <Page>
-      <h1>Hallo, {profile.login} 👋🏽</h1>
-      <Avatar src={profile.avatar_url} />
-    </Page>
-  )
 }
 
 export default App
@@ -42,10 +35,7 @@ const Page = styled.main`
   left: 0;
   height: 100%;
   width: 100%;
+  overflow-y: scroll;
 `
 
-const Avatar = styled.img`
-  height: 200px;
-  width: 200px;
-  border-radius: 50%;
-`
+
