@@ -1,28 +1,31 @@
-import {useState} from "react";
-import githubAPI from "../service/githubAPI";
+import {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import Avatar from "./Avatar";
+import Avatar from './Avatar'
+import useProfile from "../hooks/useProfile";
 
 export default function Homepage() {
-
     const [username, setUsername] = useState('')
-    const [profile, setProfile] = useState({})
     const history = useHistory()
-
-    const findUser = () => {
-        githubAPI.get('https://api.github.com/users/' + username)
-            .then(response => response.data)
-            .then(setProfile)
-            .catch(error => console.error(error))
-    }
+    const {profile, isError, handleClick} = useProfile(username)
 
     return (
         <>
-            <Avatar src={profile.avatar_url || 'https://images.placepaca.com/Alpaka_10.jpg'}/>
-            <input type="text" placeholder="Enter GitHub user" value={username}
-                   onChange={event => setUsername(event.target.value)}/>
-            <button onClick={findUser}>Find User</button>
-            {profile.id && <button onClick={()=> history.push(`${username}/repos`)}>Show Repos</button>}
+            <Avatar
+                src={profile.avatar_url || 'https://images.placepaca.com/Alpaka_10.jpg'}
+            />
+            <input
+                type="text"
+                placeholder="Enter GitHub user"
+                value={username}
+                onChange={event => setUsername(event.target.value)}
+            />
+            <button onClick={handleClick}>Find User</button>
+            {isError && <p>Something went wrong. Please try again</p>}
+            {profile.id && (
+                <button onClick={() => history.push(`${username}/repos`)}>
+                    Show Repos
+                </button>
+            )}
         </>
     )
 }

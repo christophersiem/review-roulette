@@ -1,26 +1,27 @@
 import styled from 'styled-components/macro'
-import {Switch, Route} from 'react-router-dom'
-import Homepage from "./components/Homepage";
-import RepoPage from "./components/RepoPage";
-import PullRequestPage from "./components/PullRequestPage";
+import { Switch, Route } from 'react-router-dom'
+import Homepage from './components/Homepage'
+import RepoPage from './components/RepoPage'
+import PullRequestPage from './components/PullRequestPage'
+import Header from "./components/Header";
 
 function App() {
-
-    return (
-        <Page>
-            <Switch>
-                <Route path={"/"} exact>
-                    <Homepage/>
-                </Route>
-                <Route path={"/:user/repos"}>
-                    <RepoPage/>
-                </Route>
-                <Route path={"/:user/:repo/pulls"}>
-                    <PullRequestPage/>
-                </Route>
-            </Switch>
-        </Page>
-    )
+  return (
+    <Page>
+      <Header/>
+      <Switch>
+        <Route path={'/'} exact>
+          <Homepage />
+        </Route>
+        <Route path={'/:user/repos'}>
+          <RepoPage />
+        </Route>
+        <Route path={'/:user/:repo/pulls'}>
+          <PullRequestPage />
+        </Route>
+      </Switch>
+    </Page>
+  )
 }
 
 export default App
@@ -37,5 +38,3 @@ const Page = styled.main`
   width: 100%;
   overflow-y: scroll;
 `
-
-
