@@ -3,12 +3,12 @@ import { Switch, Route } from 'react-router-dom'
 import Homepage from './components/Homepage'
 import RepoPage from './components/RepoPage'
 import PullRequestPage from './components/PullRequestPage'
-import Header from "./components/Header";
+import Header from './components/Header'
 
 function App() {
   return (
     <Page>
-      <Header/>
+      <Header />
       <Switch>
         <Route path={'/'} exact>
           <Homepage />

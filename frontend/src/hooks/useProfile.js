@@ -1,20 +1,22 @@
-import githubAPI from "../service/githubAPI";
-import {useState} from "react";
+import githubAPI from '../service/githubAPI'
+import { useEffect, useRef, useState } from 'react'
 
-export default function useProfile(username){
-    const [profile, setProfile] = useState({})
-    const [isError, setIsError] = useState(false)
-    const findUser = () => {
+export default function useProfile(username) {
+  const [profile, setProfile] = useState({})
+  const timerId = useRef(0)
+
+  useEffect(() => {
+    timerId.current && clearTimeout(timerId.current)
+    timerId.current = window.setTimeout(
+      () =>
         githubAPI
-            .get('https://api.github.com/users/' + username)
-            .then(response => response.data)
-            .then(setProfile)
-            .catch(() => setIsError(true))
-    }
-    const handleClick = () => {
-        setIsError(false)
-        findUser()
-    }
+          .get('https://api.github.com/users/' + username)
+          .then(response => response.data)
+          .then(setProfile)
+          .catch(error => console.error(error.message)),
+      600
+    )
+  }, [username])
 
-    return {profile, isError, handleClick}
+  return { profile }
 }
